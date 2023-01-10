@@ -7,6 +7,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RegisterPageComponent } from './register-page/register-page.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RegisterServiceService } from './service/register-service.service';
+import { SearchRegisterComponent } from './search-register/search-register.component';
 
 
 
@@ -14,6 +15,7 @@ import { RegisterServiceService } from './service/register-service.service';
   declarations: [
     AppComponent,
     RegisterPageComponent,
+    SearchRegisterComponent,
   ],
   imports: [
     BrowserModule,

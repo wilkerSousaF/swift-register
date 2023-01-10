@@ -1,0 +1,9 @@
+.fix-bord{
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0; 
+}
+
+.fix-bord-button{
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
