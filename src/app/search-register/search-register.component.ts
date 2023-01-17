@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { RegisterServiceService } from '../service/register-service.service';
 
 @Component({
@@ -15,7 +16,8 @@ export class SearchRegisterComponent implements OnInit {
 
 
   constructor(
-    private registerService: RegisterServiceService
+    private registerService: RegisterServiceService,
+    public router: Router,
   ){}
 
   ngOnInit(){
@@ -26,5 +28,11 @@ export class SearchRegisterComponent implements OnInit {
   search(){   
     console.log('entrou', this.form.value);
   } 
+
+  addNewRegister() {
+    this.router.navigate(['new-register']);
+  }
+
+
 
 }
