@@ -8,6 +8,10 @@ import { RegisterPageComponent } from './register-page/register-page.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RegisterServiceService } from './service/register-service.service';
 import { SearchRegisterComponent } from './search-register/search-register.component';
+import { BlockUIModule } from 'ng-block-ui';
+import {AutocompleteLibModule} from 'angular-ng-autocomplete';
+
+
 
 
 
@@ -23,9 +27,11 @@ import { SearchRegisterComponent } from './search-register/search-register.compo
     NgbModule,
     FormsModule,
     ReactiveFormsModule,
+    BlockUIModule.forRoot(),
+    AutocompleteLibModule
    
   ],
-  exports:[ RegisterPageComponent],
+  exports:[ RegisterPageComponent, SearchRegisterComponent],
   providers: [RegisterServiceService],
   bootstrap: [AppComponent]
 })

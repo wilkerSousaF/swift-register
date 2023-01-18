@@ -1,14 +1,34 @@
 <form [formGroup]="form" #ngForm="ngForm" (submit)="search()">
     <div class="d-flex justify-content-center">
         <div class="col-md-5" style="margin-top: 35px;">
-        <div class="input-group mb-3">
+          <div class="ng-autocomplete">
+            <ng-autocomplete 
+              [data]="allRegisters"
+              [searchKeyword]="keyword"
+              placeholder="Pesquisar nome"
+              (selected)='selectEvent($event)'
+
+              [itemTemplate]="itemTemplate"
+              [notFoundTemplate]="notFoundTemplate">                                 
+            </ng-autocomplete>
+            
+            <ng-template #itemTemplate let-item>
+            <a [innerHTML]="item.name"></a>
+            </ng-template>
+            
+            <ng-template #notFoundTemplate let-notFound>
+            <div [innerHTML]="notFound"></div>
+            </ng-template>
+            </div>
+       
+          <!-- <div class="input-group mb-3">
             <div class="fix-bord">
             <input type="text" class="form-control fix-bord" formControlName="name" placeholder="Pesquisar nome" aria-label="Recipient's username" aria-describedby="basic-addon2">
             </div>
             <div class="input-group-append">
               <button class="btn btn-outline-secondary fix-bord-button" type="submit">Pesquisar</button>
             </div>
-          </div>
+          </div> -->
           <div class="d-flex justify-content-end">
             <button type="button" (click)="addNewRegister()" style="width: 180px;" class="btn btn-success">Adicionar novo</button>
           </div>

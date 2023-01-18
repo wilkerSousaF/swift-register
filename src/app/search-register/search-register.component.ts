@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Register } from '../models/register.model';
 import { RegisterServiceService } from '../service/register-service.service';
 
 @Component({
@@ -10,6 +11,8 @@ import { RegisterServiceService } from '../service/register-service.service';
 })
 export class SearchRegisterComponent implements OnInit {
 
+  keyword = 'name';
+  allRegisters: Register[];
   form = new FormGroup({
     name: new FormControl(''),
   });
@@ -21,18 +24,27 @@ export class SearchRegisterComponent implements OnInit {
   ){}
 
   ngOnInit(){
-
+    this.getRegisters();
   }
 
+  async getRegisters(){
+    this.allRegisters = await this.registerService.getAllRegister();
+    console.log('registros', this.allRegisters);
+    
+  }
 
   search(){   
-    console.log('entrou', this.form.value);
+    this.registerService.getRegister();
   } 
 
   addNewRegister() {
     this.router.navigate(['new-register']);
   }
 
+  selectEvent(event:any){
+    console.log(event);
+
+  }
 
 
 }
