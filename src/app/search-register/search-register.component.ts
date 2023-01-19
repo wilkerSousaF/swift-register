@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Register } from '../models/register.model';
@@ -10,6 +10,8 @@ import { RegisterServiceService } from '../service/register-service.service';
   styleUrls: ['./search-register.component.css']
 })
 export class SearchRegisterComponent implements OnInit {
+
+  @Output() searchedData = new EventEmitter<any>();
 
   keyword = 'name';
   allRegisters: Register[];
@@ -42,8 +44,8 @@ export class SearchRegisterComponent implements OnInit {
   }
 
   selectEvent(event:any){
-    console.log(event);
-
+    this.registerService.searchedData(event);
+    this.router.navigate(['new-register']);
   }
 
 

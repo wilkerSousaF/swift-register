@@ -7,6 +7,7 @@ import { Register } from '../models/register.model';
 })
 export class RegisterServiceService {
 
+  dataReceived: any;
   private db!: Dexie;
  
  private table: Dexie.Table<any, any>;
@@ -28,7 +29,6 @@ export class RegisterServiceService {
 
    async saveRegister(register: any){
     console.log('entrou no service', register);
-    
     try {
       await this.table.add(register);
       const allRegisters: Register[] = await this.table.toArray();
@@ -54,5 +54,21 @@ export class RegisterServiceService {
 
    async registerList() {
     return await this.table.get({name:"asdf"})
+   }
+
+   async searchedData(data: any){
+    this.dataReceived = data;
+   }
+
+   clear(){
+    this.dataReceived = null;
+   }
+
+   updateRegister(register: any){
+    this.table.put(register).then( () => {
+      console.log('Registro atualizado com sucesso');
+    }).catch(err => {
+      console.log(err);
+    });
    }
 }

@@ -1,5 +1,9 @@
 <form [formGroup]="form" #ngForm="ngForm" (submit)="save()">
 <div class="d-flex justify-content-center" *blockUI="'block-ui'; message: 'teste'">
+
+  <div>
+    <button type="button" (click)="back()" class="btn btn-success printPageButton">voltar</button>
+  </div>
   
     <div class="col-md-5" style="padding: 10px;">
       
@@ -17,7 +21,7 @@
           <div class="input-group-prepend">
             <span class="input-group-text fix-bord" id="basic-addon1">N° Atendimento</span>
           </div>
-          <input type="text" style="text-align: center;" formControlName="counter" class="form-control" aria-label="id" readonly
+          <input type="text" style="text-align: center;" class="form-control" aria-label="id" readonly
             aria-describedby="basic-addon1">
         </div>
       </div>
