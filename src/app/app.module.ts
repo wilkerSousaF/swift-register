@@ -10,7 +10,9 @@ import { RegisterServiceService } from './service/register-service.service';
 import { SearchRegisterComponent } from './search-register/search-register.component';
 import { BlockUIModule } from 'ng-block-ui';
 import {AutocompleteLibModule} from 'angular-ng-autocomplete';
-
+import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CommonModule } from '@angular/common';
 
 
 
@@ -28,7 +30,11 @@ import {AutocompleteLibModule} from 'angular-ng-autocomplete';
     FormsModule,
     ReactiveFormsModule,
     BlockUIModule.forRoot(),
-    AutocompleteLibModule
+    AutocompleteLibModule,
+    ToastrModule.forRoot(),
+    BrowserAnimationsModule,
+    ReactiveFormsModule,
+    CommonModule
    
   ],
   exports:[ RegisterPageComponent, SearchRegisterComponent],

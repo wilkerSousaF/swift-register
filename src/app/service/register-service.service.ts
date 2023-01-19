@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import Dexie, { liveQuery } from 'dexie';
+import { ToastrService } from 'ngx-toastr';
 import { Register } from '../models/register.model';
 
 @Injectable({
@@ -15,7 +16,9 @@ export class RegisterServiceService {
     
   
 
-  constructor() {
+  constructor(
+    private toastr: ToastrService
+  ) {
     this.initializateDb();
    }
 
@@ -32,9 +35,9 @@ export class RegisterServiceService {
     try {
       await this.table.add(register);
       const allRegisters: Register[] = await this.table.toArray();
-      console.log('todos os registros', allRegisters);
+      this.toastr.success('Registro salvo com sucesso!');
     } catch (error) {
-      console.log('Falhou!', error);
+      this.toastr.error('Falha ao salvar registro!');
     }
    }
 
@@ -66,9 +69,9 @@ export class RegisterServiceService {
 
    updateRegister(register: any){
     this.table.put(register).then( () => {
-      console.log('Registro atualizado com sucesso');
+      this.toastr.success('Registro atualizado com sucesso!');
     }).catch(err => {
-      console.log(err);
+      this.toastr.error('Falha ao salvar registro!');
     });
    }
 }

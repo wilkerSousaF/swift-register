@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup,NgForm, FormControl} from '@angular/forms';
+import { FormBuilder, FormGroup,NgForm, FormControl, Validators} from '@angular/forms';
 import { RegisterServiceService } from '../service/register-service.service';
 import * as moment from 'moment';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
@@ -20,10 +20,10 @@ export class RegisterPageComponent implements OnInit {
   receivedData: any;
 
   form = new FormGroup({
-    name: new FormControl(''),
-    city: new FormControl(''),
+    name: new FormControl('', [Validators.required]),
+    city: new FormControl('',),
     age: new FormControl(''),
-    type: new FormControl(''),
+    type: new FormControl('MASC'),
     date: new FormControl(''),
     zip: new FormControl(''),
     id: new FormControl(''),
@@ -66,19 +66,23 @@ export class RegisterPageComponent implements OnInit {
 
   save(){
     this.blockUI.start();
-    if(!this.form.value.id){
-      this.form.get('id')?.setValue(moment().format());
-      this.registerService.saveRegister(this.form.value);
-    } else {
-      console.log('entrou');
-      
-      this.registerService.updateRegister(this.form.value);
-    }
+    if(this.form.valid){
+      if(!this.form.value.id){
+        this.form.get('id')?.setValue(moment().format());
+        this.registerService.saveRegister(this.form.value);
+      } else {
+        console.log('entrou');
+        this.registerService.updateRegister(this.form.value);
+      }
 
-    this.incrementCounter();
-    setTimeout(() => {
-      this.blockUI.stop(); 
-    }, 2000);
+      this.incrementCounter();
+      setTimeout(() => {
+        this.blockUI.stop(); 
+      }, 1000);
+  } else {
+    this.form.markAllAsTouched();
+    this.blockUI.stop(); 
+  }
   } 
 
   incrementCounter() {

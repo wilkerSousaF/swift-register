@@ -1,22 +1,23 @@
-<form [formGroup]="form" #ngForm="ngForm" (submit)="save()">
-<div class="d-flex justify-content-center" *blockUI="'block-ui'; message: 'teste'">
+<form [formGroup]="form" #ngForm="ngForm" (submit)="save()" *blockUI="'block-ui'; message: 'Salvando...'">
+  <div class="d-flex justify-content-center" style="padding-top: 5px;">
 
-  <div>
-    <button type="button" (click)="back()" class="btn btn-success printPageButton">voltar</button>
-  </div>
-  
+    <div>
+      <button type="button" (click)="back()" class="btn btn-light back-button printPageButton"><img
+          style="height: 20px;" src="assets/icons/left-chevron.svg">Voltar</button>
+    </div>
+
     <div class="col-md-5" style="padding: 10px;">
-      
+
 
       <div class="d-flex justify-content-between">
         <div class="input-group" style="margin-top: 35px; width: 300px;">
           <div class="input-group-prepend">
-            <span class="input-group-text fix-bord" id="basic-addon1">Data</span>
+            <span class="input-group-text fix-bord" id="basic-addon1" style="min-width: 75px;">Data</span>
           </div>
-          <input type="text" class="form-control" formControlName="date" style="text-align: center;"  placeholder="01/12/2022" aria-label="data" readonly
-            aria-describedby="basic-addon1">
+          <input type="text" class="form-control" formControlName="date" style="text-align: center;"
+            placeholder="01/12/2022" aria-label="data" readonly aria-describedby="basic-addon1">
         </div>
-  
+
         <div class="input-group" style="margin-top: 35px; width: 300px;">
           <div class="input-group-prepend">
             <span class="input-group-text fix-bord" id="basic-addon1">N° Atendimento</span>
@@ -25,32 +26,38 @@
             aria-describedby="basic-addon1">
         </div>
       </div>
-  
-      <div class="input-group mb-3" style="margin-top: 50px;">
+
+      <div class="input-group mb-3" style="margin-top: 15px;">
         <div class="input-group-prepend">
-          <span class="input-group-text fix-bord" id="basic-addon1">Nome</span>
+          <span class="input-group-text fix-bord" id="basic-addon1" style="min-width: 75px;">Nome</span>
         </div>
-        <input type="text" class="form-control" formControlName="name" placeholder="Nome completo" aria-label="nome"
-          aria-describedby="basic-addon1">
+        <input type="text" class="form-control" formControlName="name"
+          [ngClass]="form.get('name')?.invalid && form.get('name')?.touched ? 'error-name':'form-control'"
+          placeholder="Nome completo" aria-label="nome" aria-describedby="basic-addon1">
       </div>
-  
-      <div class="input-group mb-3" >
-        <div class="input-group-prepend">
-          <span class="input-group-text fix-bord" id="basic-addon1">Cidade</span>
-        </div>
-        <input type="text" class="form-control" formControlName="city" placeholder="Nome completo" aria-label="nome"
-          aria-describedby="basic-addon1">
+      <div class="error-message-container" *ngIf="form.get('name')?.invalid && form.get('name')?.touched">
+        <div *ngIf="form.get('name')?.errors?.['required']" class="error-message">É necessário adicionar um Nome!</div>
       </div>
-  
+
+
       <div class="input-group mb-3">
         <div class="input-group-prepend">
-          <span class="input-group-text fix-bord" id="basic-addon1">Idade</span>
+          <span class="input-group-text fix-bord" id="basic-addon1" style="min-width: 75px;">Cidade</span>
         </div>
-        <input type="text" class="form-control" placeholder="anos" formControlName="age" aria-label="idade" aria-describedby="basic-addon1">
-  
-        <select class="form-select" style="margin-left: 5px;" formControlName="type" aria-label="Default select example">
-          <option selected>Sexo/Tipo</option>
-          <option value="MASC">Masculino</option>
+        <input type="text" class="form-control" formControlName="city" placeholder="Cidade/Estado" aria-label="nome"
+          aria-describedby="basic-addon1">
+      </div>
+
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text fix-bord" id="basic-addon1" style="min-width: 75px;">Idade</span>
+        </div>
+        <input type="text" class="form-control" placeholder="Idade" formControlName="age" aria-label="idade"
+          aria-describedby="basic-addon1">
+
+        <select class="form-select" style="margin-left: 5px;" formControlName="type"
+          aria-label="Sexo/Tipo">
+          <option value="MASC" selected>Masculino</option>
           <option value="FEM">Feminino</option>
           <option value="PREF">Preferencial</option>
           <option value="CRIA">Criança</option>
@@ -61,32 +68,28 @@
         <div class="input-group-prepend">
           <span class="input-group-text fix-bord" id="basic-addon1">Responsável</span>
         </div>
-        <input type="text" class="form-control" formControlName="responsible1" placeholder="Nome completo" aria-label="nome"
-          aria-describedby="basic-addon1">
+        <input type="text" class="form-control" formControlName="responsible1"
+          placeholder="Nome completo do Responsável" aria-label="nome" aria-describedby="basic-addon1">
       </div>
 
-      <div class="input-group mb-3" *ngIf="form.value.type === 'CRIA'">
-        <div class="input-group-prepend">
-          <span class="input-group-text fix-bord" id="basic-addon1">Responsável</span>
-        </div>
-        <input type="text" class="form-control" formControlName="responsible2" placeholder="Nome completo" aria-label="nome"
-          aria-describedby="basic-addon1">
-      </div>
-  
       <div class="input-group mb-3">
         <div class="input-group-prepend">
           <span class="input-group-text fix-bord" style="min-height: 110px; align-items: baseline;">Descrição:</span>
         </div>
         <textarea class="form-control" rows="4" formControlName="description" aria-label="With textarea"></textarea>
       </div>
-  
-      <div class="d-flex justify-content-end">
-        <button type="submit" style="width: 180px;" class="btn btn-success printPageButton">Salvar</button>
+
+      <div class="d-flex justify-content-between">
+        <div>
+          <button type="submit" style="width: 180px;" class="btn btn-success printPageButton">Salvar</button>
+        </div>
+
+        <div>
+          <button type="button" (click)="printScreen()" style="width: 180px; margin-top: 10px;" id="printPageButton"
+            class="btn btn-primary printPageButton">Imprimir</button>
+        </div>
       </div>
 
-      <div class="d-flex justify-content-end">
-        <button type="button" (click)="printScreen()" style="width: 180px; margin-top: 10px;" id="printPageButton" class="btn btn-primary printPageButton">Adicionar novo</button>
-      </div>
-      </div>
     </div>
-  </form>
+  </div>
+</form>
