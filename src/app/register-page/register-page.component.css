@@ -38,3 +38,13 @@
   color: #E85445;
   background-color: #FAEDEC;
 }
+
+.fix-age-bord{
+  border-top-right-radius: 0.375rem !important;
+  border-bottom-right-radius: 0.375rem !important;
+}
+
+.fix-type-bord{
+  border-top-left-radius: 0.375rem !important;
+  border-bottom-left-radius: 0.375rem !important; 
+}
