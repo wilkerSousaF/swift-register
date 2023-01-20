@@ -7,7 +7,7 @@
               [searchKeyword]="keyword"
               placeholder="Pesquisar nome"
               (selected)='selectEvent($event)'
-
+              [notFoundText]="notFound"
               [itemTemplate]="itemTemplate"
               [notFoundTemplate]="notFoundTemplate">                                 
             </ng-autocomplete>

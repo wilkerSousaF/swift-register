@@ -22,7 +22,7 @@ export class RegisterPageComponent implements OnInit {
   showPrintError: boolean = false;
 
   form = new FormGroup({
-    name: new FormControl('', [Validators.required]),
+    name: new FormControl('', [Validators.required, this.noWhitespaceValidator]),
     city: new FormControl(''),
     age: new FormControl(''),
     type: new FormControl('MASC'),
@@ -53,6 +53,19 @@ export class RegisterPageComponent implements OnInit {
       this.loadRegister(this.receivedData);
     }
 
+  }
+
+  noWhitespaceValidator(control: FormControl) {
+    const isWhitespace = (control.value || '').trim().length === 0;
+    const isValid = !isWhitespace;
+    return isValid ? null : { 'whitespace': true };
+  }
+
+  onlyNumber(event: any) {
+    let charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      event.preventDefault();
+    }
   }
 
   checkCounterDay(){

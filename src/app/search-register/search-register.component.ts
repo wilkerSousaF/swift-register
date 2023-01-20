@@ -14,6 +14,7 @@ export class SearchRegisterComponent implements OnInit {
   @Output() searchedData = new EventEmitter<any>();
 
   keyword = 'name';
+  notFound = 'Nenhum nome encontrado';
   allRegisters: Register[];
   form = new FormGroup({
     name: new FormControl(''),
