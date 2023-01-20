@@ -31,7 +31,9 @@ import { CommonModule } from '@angular/common';
     ReactiveFormsModule,
     BlockUIModule.forRoot(),
     AutocompleteLibModule,
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot({
+      timeOut: 900
+    }),
     BrowserAnimationsModule,
     ReactiveFormsModule,
     CommonModule

@@ -18,10 +18,11 @@ export class RegisterPageComponent implements OnInit {
   counter = 1;
   currentDate = new Date();
   receivedData: any;
+  blockSave: boolean = false;
 
   form = new FormGroup({
     name: new FormControl('', [Validators.required]),
-    city: new FormControl('',),
+    city: new FormControl(''),
     age: new FormControl(''),
     type: new FormControl('MASC'),
     date: new FormControl(''),
@@ -42,13 +43,21 @@ export class RegisterPageComponent implements OnInit {
   ngOnInit(){
    this.receivedData = this.registerService.dataReceived;
     this.form.get('date')?.setValue(moment().format('DD/MM/YYYY'));
-    console.log(this.form.get('date')?.value, this.currentDate);
-    console.log('initSearched', this.receivedData);
+
+    this.checkCounterDay();
+    
+    this.counter = this.registerService.counterData;
     
     if(this.receivedData){
       this.loadRegister(this.receivedData);
     }
 
+  }
+
+  checkCounterDay(){
+    let today = new Date();
+    if(today.getDay() > this.currentDate.getDay())
+    this.registerService.resetCounter();
   }
 
   loadRegister(data: any){
@@ -77,6 +86,7 @@ export class RegisterPageComponent implements OnInit {
 
       this.incrementCounter();
       setTimeout(() => {
+        this.blockSave = this.registerService.saved;
         this.blockUI.stop(); 
       }, 1000);
   } else {
@@ -87,12 +97,16 @@ export class RegisterPageComponent implements OnInit {
 
   incrementCounter() {
     let today = new Date();
-    // if (today.getDate() !== this.currentDate.getDate())
+    if (today.getDate() !== this.currentDate.getDate())
       this.counter++;
   }
 
   printScreen() {
+    if(this.form.valid){
     window.print();
+    this.router.navigate(['']);
+    this.clear();
+  }
   }
 
   back() {
@@ -104,6 +118,7 @@ export class RegisterPageComponent implements OnInit {
     this.receivedData = null;
     this.form.reset();
     this.registerService.clear();
+    this.blockSave = false;
   }
 
 }

@@ -22,7 +22,7 @@
           <div class="input-group-prepend">
             <span class="input-group-text fix-bord" id="basic-addon1">N° Atendimento</span>
           </div>
-          <input type="text" style="text-align: center;" class="form-control" aria-label="id" readonly
+          <input type="text" style="text-align: center;" [value]="counter" class="form-control" aria-label="id" readonly
             aria-describedby="basic-addon1">
         </div>
       </div>
@@ -81,12 +81,12 @@
 
       <div class="d-flex justify-content-between">
         <div>
-          <button type="submit" style="width: 180px;" class="btn btn-success printPageButton">Salvar</button>
+          <button *ngIf="!blockSave" type="submit" style="width: 180px;" class="btn btn-success printPageButton">Salvar</button>
         </div>
 
         <div>
           <button type="button" (click)="printScreen()" style="width: 180px; margin-top: 10px;" id="printPageButton"
-            class="btn btn-primary printPageButton">Imprimir</button>
+            class="btn btn-primary printPageButton">Imprimir e voltar</button>
         </div>
       </div>
 
