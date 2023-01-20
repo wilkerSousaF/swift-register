@@ -85,8 +85,9 @@
         </div>
 
         <div>
-          <button type="button" (click)="printScreen()" style="width: 180px; margin-top: 10px;" id="printPageButton"
+          <button type="button" (click)="printScreen()" style="width: 180px;" id="printPageButton"
             class="btn btn-primary printPageButton">Imprimir e voltar</button>
+            <div *ngIf="showPrintError" class="error-message printPageButton">Salve antes de imprimir</div>
         </div>
       </div>
 

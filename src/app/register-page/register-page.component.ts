@@ -19,6 +19,7 @@ export class RegisterPageComponent implements OnInit {
   currentDate = new Date();
   receivedData: any;
   blockSave: boolean = false;
+  showPrintError: boolean = false;
 
   form = new FormGroup({
     name: new FormControl('', [Validators.required]),
@@ -75,6 +76,7 @@ export class RegisterPageComponent implements OnInit {
 
   save(){
     this.blockUI.start();
+    this.showPrintError = false;
     if(this.form.valid){
       if(!this.form.value.id){
         this.form.get('id')?.setValue(moment().format());
@@ -102,10 +104,15 @@ export class RegisterPageComponent implements OnInit {
   }
 
   printScreen() {
-    if(this.form.valid){
+    if(this.blockSave){
     window.print();
     this.router.navigate(['']);
     this.clear();
+  } else {
+    this.showPrintError = true;
+    setTimeout(() => {
+      this.showPrintError = false;
+    }, 2000);
   }
   }
 
