@@ -19,10 +19,14 @@
         </div>
 
         <div class="input-group" style="margin-top: 35px; width: 300px;">
-          <div class="input-group-prepend">
-            <span class="input-group-text fix-bord" id="basic-addon1">N° Atendimento</span>
-          </div>
-          <input type="text" style="text-align: center;" [value]="counter" class="form-control" aria-label="id" readonly
+          <select class="form-select fix-type-bord" style="margin-left: 5px;" formControlName="type"
+          aria-label="Sexo/Tipo">
+          <option value="MASC" selected>Masculino</option>
+          <option value="FEM">Feminino</option>
+          <option value="PREF">Preferencial</option>
+          <option value="CRIA">Criança</option>
+        </select>
+          <input type="number" style="text-align: center;" [value]="counter" min="0" class="form-control" aria-label="id" 
             aria-describedby="basic-addon1">
         </div>
       </div>
@@ -45,24 +49,14 @@
         <div class="input-group-prepend">
           <span class="input-group-text fix-bord" id="basic-addon1" style="min-width: 75px;">Cidade</span>
         </div>
-        <input type="text" class="form-control" formControlName="city" placeholder="Cidade/Estado" aria-label="nome"
+        <input type="text" class="form-control fix-age-bord" formControlName="city" placeholder="Cidade/Estado" aria-label="nome"
           aria-describedby="basic-addon1" maxlength="67">
-      </div>
 
-      <div class="input-group mb-3">
-        <div class="input-group-prepend">
-          <span class="input-group-text fix-bord" id="basic-addon1" style="min-width: 75px;">Idade</span>
-        </div>
-        <input type="text" class="form-control fix-age-bord" placeholder="Idade" formControlName="age" aria-label="idade"
-          aria-describedby="basic-addon1" maxlength="4" (keypress)="onlyNumber($event)">
-
-        <select class="form-select fix-type-bord" style="margin-left: 5px;" formControlName="type"
-          aria-label="Sexo/Tipo">
-          <option value="MASC" selected>Masculino</option>
-          <option value="FEM">Feminino</option>
-          <option value="PREF">Preferencial</option>
-          <option value="CRIA">Criança</option>
-        </select>
+          <div class="input-group-prepend">
+            <span class="input-group-text fix-bord" id="basic-addon1" style="min-width: 75px; margin-left: 5px;">Idade</span>
+          </div>
+          <input type="text" class="form-control fix-age-bord" placeholder="Idade" formControlName="age" aria-label="idade"
+            aria-describedby="basic-addon1" maxlength="4" (keypress)="onlyNumber($event)">
       </div>
 
       <div class="input-group mb-3" *ngIf="form.value.type === 'CRIA'">
@@ -75,9 +69,9 @@
 
       <div class="input-group mb-3">
         <div class="input-group-prepend">
-          <span class="input-group-text fix-bord" style="min-height: 110px; align-items: baseline;">Descrição:</span>
+          <span class="input-group-text fix-bord" style="min-height: 254px; align-items: baseline;">Descrição:</span>
         </div>
-        <textarea class="form-control" rows="4" formControlName="description" aria-label="With textarea" maxlength="249"></textarea>
+        <textarea class="form-control" rows="10" formControlName="description" aria-label="With textarea" maxlength="889"></textarea>
       </div>
 
       <div class="d-flex justify-content-between">

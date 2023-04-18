@@ -44,10 +44,6 @@ export class RegisterPageComponent implements OnInit {
   ngOnInit(){
    this.receivedData = this.registerService.dataReceived;
     this.form.get('date')?.setValue(moment().format('DD/MM/YYYY'));
-
-    this.checkCounterDay();
-    
-    this.counter = this.registerService.counterData;
     
     if(this.receivedData){
       this.loadRegister(this.receivedData);
@@ -66,12 +62,6 @@ export class RegisterPageComponent implements OnInit {
     if (charCode > 31 && (charCode < 48 || charCode > 57)) {
       event.preventDefault();
     }
-  }
-
-  checkCounterDay(){
-    let today = new Date();
-    if(today.getDay() > this.currentDate.getDay())
-    this.registerService.resetCounter();
   }
 
   loadRegister(data: any){
@@ -99,7 +89,6 @@ export class RegisterPageComponent implements OnInit {
         this.registerService.updateRegister(this.form.value);
       }
 
-      this.incrementCounter();
       setTimeout(() => {
         this.blockSave = this.registerService.saved;
         this.blockUI.stop(); 
@@ -110,11 +99,6 @@ export class RegisterPageComponent implements OnInit {
   }
   } 
 
-  incrementCounter() {
-    let today = new Date();
-    if (today.getDate() !== this.currentDate.getDate())
-      this.counter++;
-  }
 
   printScreen() {
     if(this.blockSave){

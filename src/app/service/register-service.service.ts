@@ -8,7 +8,6 @@ import { Register } from '../models/register.model';
 })
 export class RegisterServiceService {
 
-  counterData= 1;
   dataReceived: any;
   private db!: Dexie;
  
@@ -22,6 +21,7 @@ export class RegisterServiceService {
     private toastr: ToastrService
   ) {
     this.initializateDb();
+    this.persist();
    }
 
    private initializateDb(){
@@ -38,7 +38,6 @@ export class RegisterServiceService {
       await this.table.add(register);
       const allRegisters: Register[] = await this.table.toArray();
       this.toastr.success('Registro salvo com sucesso!');
-      this.counterData++;
       this.saved = true;
     } catch (error) {
       this.toastr.error('Falha ao salvar registro!');
@@ -75,18 +74,20 @@ export class RegisterServiceService {
    updateRegister(register: any){
     this.table.put(register).then( () => {
       this.toastr.success('Registro atualizado com sucesso!');
-      this.counterData++;
       this.saved = true;
     }).catch(err => {
       this.toastr.error('Falha ao salvar registro!');
     });
    }
 
-   resetCounter(){
-    this.counterData = 1;
-   }
 
    setButtonSaveRelease(){
     this.saved = false;
    }
+
+
+   async persist() {
+    return await navigator.storage && navigator.storage.persist &&
+      navigator.storage.persist();
+  }
 }
