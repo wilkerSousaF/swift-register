@@ -52,8 +52,16 @@ export class RegisterServiceService {
     })
    }
 
-   async getAllRegister(){
+   async getRegisterByBirth(){
     const allRegisters: Register[] = await this.table.toArray();
+    allRegisters.forEach(register =>{
+      if(register.age?.includes("12"))
+      console.log(register);
+    })
+   }
+
+   async getAllRegister(){
+    const allRegisters: Register[] = await this.table.orderBy('id').reverse().toArray();
     return allRegisters;
     
    }

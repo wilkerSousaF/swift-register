@@ -8,4 +8,5 @@ export class Register {
     responsible2: string | null | undefined;
     description: string | null | undefined;
     date: string | null | undefined;
+    nameAndAge: string | null | undefined;
 }

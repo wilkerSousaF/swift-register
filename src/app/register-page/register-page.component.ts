@@ -22,7 +22,7 @@ export class RegisterPageComponent implements OnInit {
   showPrintError: boolean = false;
 
   form = new FormGroup({
-    name: new FormControl('', [Validators.required, this.noWhitespaceValidator]),
+    name: new FormControl('', [Validators.required]),
     city: new FormControl(''),
     age: new FormControl(''),
     type: new FormControl('MASC'),
@@ -58,10 +58,10 @@ export class RegisterPageComponent implements OnInit {
   }
 
   onlyNumber(event: any) {
-    let charCode = (event.which) ? event.which : event.keyCode;
-    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-      event.preventDefault();
-    }
+    // let charCode = (event.which) ? event.which : event.keyCode;
+    // if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+    //   event.preventDefault();
+    // }
   }
 
   loadRegister(data: any){

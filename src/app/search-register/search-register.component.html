@@ -3,13 +3,15 @@
         <div class="col-md-5" style="margin-top: 35px;">
           <div class="ng-autocomplete">
             <ng-autocomplete 
-              [data]="allRegisters"
+              [data]="filteredRegisters"
               [searchKeyword]="keyword"
               placeholder="Pesquisar nome"
               (selected)='selectEvent($event)'
+              (inputChanged)='onChangeSearch($event)'
               [notFoundText]="notFound"
               [itemTemplate]="itemTemplate"
-              [notFoundTemplate]="notFoundTemplate">                                 
+              [notFoundTemplate]="notFoundTemplate"
+              [customFilter]="searchNameAndAge">                                 
             </ng-autocomplete>
             
             <ng-template #itemTemplate let-item>
@@ -34,5 +36,14 @@
           </div>
         </div>
         
+    </div>
+
+    <div class="d-flex justify-content-around" style="margin-top: 150px;">
+      <div>
+        <button type="button" (click)="newImport()" style="width: 180px; margin-top: 10px;" class="btn btn-primary">Importar dados</button>
+      </div>
+      <div>
+        <button type="button" (click)="newExport()" style="width: 180px; margin-top: 10px;" class="btn btn-primary">Exportar dados</button>
+      </div>
     </div>
 </form>

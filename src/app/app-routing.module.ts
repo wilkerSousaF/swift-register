@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { RegisterPageComponent } from './register-page/register-page.component';
 import { SearchRegisterComponent } from './search-register/search-register.component';
+import { ImportDataComponent } from './import-data/import-data.component';
+import { ExportDataComponent } from './export-data/export-data.component';
 
 const routes: Routes = [
   {
@@ -11,6 +13,14 @@ const routes: Routes = [
   {
     path: 'new-register',
     component: RegisterPageComponent,
+  },
+  {
+    path: 'import',
+    component: ImportDataComponent,
+  },
+  {
+    path: 'export',
+    component: ExportDataComponent
   }
 ];
 

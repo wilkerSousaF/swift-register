@@ -53,10 +53,10 @@
           aria-describedby="basic-addon1" maxlength="67">
 
           <div class="input-group-prepend">
-            <span class="input-group-text fix-bord" id="basic-addon1" style="min-width: 75px; margin-left: 5px;">Idade</span>
+            <span class="input-group-text fix-bord" id="basic-addon1" style="min-width: 75px; margin-left: 5px;">Dt.Nasc.:</span>
           </div>
           <input type="text" class="form-control fix-age-bord" placeholder="Idade" formControlName="age" aria-label="idade"
-            aria-describedby="basic-addon1" maxlength="4" (keypress)="onlyNumber($event)">
+            aria-describedby="basic-addon1" maxlength="20" >
       </div>
 
       <div class="input-group mb-3" *ngIf="form.value.type === 'CRIA'">

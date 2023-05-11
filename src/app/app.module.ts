@@ -13,6 +13,8 @@ import {AutocompleteLibModule} from 'angular-ng-autocomplete';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
+import { ImportDataComponent } from './import-data/import-data.component';
+import { ExportDataComponent } from './export-data/export-data.component';
 
 
 
@@ -22,6 +24,8 @@ import { CommonModule } from '@angular/common';
     AppComponent,
     RegisterPageComponent,
     SearchRegisterComponent,
+    ImportDataComponent,
+    ExportDataComponent,
   ],
   imports: [
     BrowserModule,

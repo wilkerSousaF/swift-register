@@ -19,6 +19,8 @@ export class SearchRegisterComponent implements OnInit {
   form = new FormGroup({
     name: new FormControl(''),
   });
+  filteredRegisters: Register[];
+  searchParam: any;
 
 
   constructor(
@@ -32,11 +34,14 @@ export class SearchRegisterComponent implements OnInit {
 
   async getRegisters(){
     this.allRegisters = await this.registerService.getAllRegister();
+    this.filteredRegisters = this.allRegisters;
     console.log('registros', this.allRegisters);
     
   }
 
-  search(){   
+  search(){  
+    console.log('allRegisters', this.allRegisters);
+    
     this.registerService.getRegister();
   } 
 
@@ -49,5 +54,34 @@ export class SearchRegisterComponent implements OnInit {
     this.router.navigate(['new-register']);
   }
 
+  onChangeSearch(search: any){
+    console.log('input', search);   
+
+    this.searchParam = search;
+ 
+  }
+
+  newImport(){
+    this.router.navigate(['import'])
+  }
+
+  newExport() {
+    this.router.navigate(['export'])
+  }
+
+  searchNameAndAge(registers: any[], query:any ){
+    for (const register of registers) {
+      register.nameAndAge = `${register.name} ${register.age}`;
+    }
+
+    if(query.includes(" ")){
+      let separatedQuery =  query.split(" ");      
+      return separatedQuery.every((str: string) => {
+        registers.filter(register => register.nameAndAge.toLowerCase().includes(str.toLowerCase()))
+      }) 
+    } else {
+      return registers.filter(register => register.nameAndAge.toLowerCase().includes(query.toLowerCase()))
+    }
+  }
 
 }
