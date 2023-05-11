@@ -15,6 +15,7 @@ function createWindow () {
         simpleFullscreen: false,
         resizable: false,
         autoHideMenuBar: true,
+        
     })
 
     win.loadFile('./dist/swift-register/index.html')
