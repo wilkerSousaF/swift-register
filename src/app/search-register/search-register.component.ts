@@ -49,5 +49,9 @@ export class SearchRegisterComponent implements OnInit {
     this.router.navigate(['new-register']);
   }
 
+  exportFunction() {
+    this.registerService.exportDatabase();
+  }
+
 
 }

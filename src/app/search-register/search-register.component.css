@@ -31,4 +31,25 @@
     .ng-autocomplete ::ng-deep .autocomplete-container ::ng-deep .not-found {
     border: 0;
     }
+
+    .export-button{
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin-right: 5px;
+        margin-top: 5px;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: #D3D3D3; /* cor de fundo do botão */
+        color: #fff; /* cor do ícone */
+        border: none;
+        outline: none;
+        cursor: pointer;
+        box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2); /* sombra do botão */;
+      }
   
+      .export-button:hover {
+        background-color: #007bff;
+        color: #fff;
+      }
