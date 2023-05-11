@@ -13,7 +13,7 @@ import {AutocompleteLibModule} from 'angular-ng-autocomplete';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
-
+import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 
 
 
@@ -36,11 +36,13 @@ import { CommonModule } from '@angular/common';
     }),
     BrowserAnimationsModule,
     ReactiveFormsModule,
-    CommonModule
+    CommonModule,
+    NgxMaskDirective,
+    NgxMaskPipe
    
   ],
   exports:[ RegisterPageComponent, SearchRegisterComponent],
-  providers: [RegisterServiceService],
+  providers: [RegisterServiceService, provideNgxMask()],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -53,7 +53,7 @@ export class RegisterServiceService {
    }
 
    async getAllRegister(){
-    const allRegisters: Register[] = await this.table.toArray();
+    const allRegisters: Register[] = await this.table.orderBy('id').reverse().toArray();
     return allRegisters;
     
    }
