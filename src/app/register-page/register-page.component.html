@@ -49,14 +49,22 @@
         <div class="input-group-prepend">
           <span class="input-group-text fix-bord" id="basic-addon1" style="min-width: 75px;">Cidade</span>
         </div>
-        <input type="text" class="form-control fix-age-bord" formControlName="city" placeholder="Cidade/Estado" aria-label="nome"
+        <input type="text" style="min-width: 230px !important;" class="form-control fix-age-bord" formControlName="city" placeholder="Cidade/Estado" aria-label="nome"
           aria-describedby="basic-addon1" maxlength="67">
 
           <div class="input-group-prepend">
             <span class="input-group-text fix-bord" id="basic-addon1" style="min-width: 75px; margin-left: 5px;">Data Nasc.:</span>
           </div>
-          <input type="text" class="form-control fix-age-bord" placeholder="DD/MM/AAAA" formControlName="age" aria-label="idade"
-            aria-describedby="basic-addon1" maxlength="10" (keypress)="onlyNumber($event)" mask="00/00/0000">
+          <input type="text" class="form-control" 
+          [ngClass]="!flatAge ? 'fix-age-bord':'fix-bord'"
+          placeholder="DD/MM/AAAA" formControlName="age" aria-label="idade" style="max-width: 135px !important;"
+            aria-describedby="basic-addon1" maxlength="10" (keypress)="onlyNumber($event)" mask="00/00/0000" (blur)="calcAge()">
+            <!-- <input type="text" style="text-align: center; width: 10px !important;" [value]="flatAge" class="form-control" aria-label="idade" 
+            aria-describedby="basic-addon1"> -->
+            <div class="input-group-prepend " *ngIf="flatAge && form.value.age">
+              <span class="input-group-text fix-age-bord" id="basic-addon1" style="min-width: 75px; border-radius: 0;">{{flatAge}}</span>
+            </div>
+            
       </div>
 
       <div class="input-group mb-3" *ngIf="form.value.type === 'CRIA'">

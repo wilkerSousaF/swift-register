@@ -16,7 +16,7 @@
             </ng-autocomplete>
             
             <ng-template #itemTemplate let-item>
-            <a [innerHTML]="item.name"></a>
+              <a [innerHTML]="item.nameAndAge"></a>
             </ng-template>
             
             <ng-template #notFoundTemplate let-notFound>

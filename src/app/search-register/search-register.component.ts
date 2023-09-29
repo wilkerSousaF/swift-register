@@ -3,6 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Register } from '../models/register.model';
 import { RegisterServiceService } from '../service/register-service.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'search-register',
@@ -13,7 +14,7 @@ export class SearchRegisterComponent implements OnInit {
 
   @Output() searchedData = new EventEmitter<any>();
 
-  keyword = 'name';
+  keyword = 'nameAndAge';
   notFound = 'Nenhum nome encontrado';
   allRegisters: Register[];
   form = new FormGroup({
@@ -32,6 +33,9 @@ export class SearchRegisterComponent implements OnInit {
 
   async getRegisters(){
     this.allRegisters = await this.registerService.getAllRegister();
+    this.allRegisters.map(item => (
+      item.nameAndAge = `${this.normalizeString(item.name)} - ${this.formatDate(item.age)}`
+    ));
     console.log('registros', this.allRegisters);
     
   }
@@ -51,6 +55,27 @@ export class SearchRegisterComponent implements OnInit {
 
   exportFunction() {
     this.registerService.exportDatabase();
+  }
+
+  formatDate(inputDate: any) {
+    if (inputDate && inputDate.length === 8) {
+      const day = inputDate.substring(0, 2);
+      const month = inputDate.substring(2, 4);
+      const year = inputDate.substring(4, 8);
+      
+      const formattedDate = `${day}/${month}/${year}`;
+      
+      return formattedDate;
+    } else {
+      return inputDate; // Caso a data não esteja no formato esperado
+    }
+  }
+
+  normalizeString(input: any): string {
+    return input
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase();
   }
 
 

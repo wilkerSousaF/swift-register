@@ -16,13 +16,14 @@ export class RegisterPageComponent implements OnInit {
 
   @BlockUI('block-ui') blockUI: NgBlockUI;
   counter = 1;
+  flatAge: any;
   currentDate = new Date();
   receivedData: any;
   blockSave: boolean = false;
   showPrintError: boolean = false;
 
   form = new FormGroup({
-    name: new FormControl('', [Validators.required, this.noWhitespaceValidator]),
+    name: new FormControl('', [Validators.required]),
     city: new FormControl(''),
     age: new FormControl(''),
     type: new FormControl('MASC'),
@@ -123,6 +124,23 @@ export class RegisterPageComponent implements OnInit {
     this.form.reset();
     this.registerService.clear();
     this.blockSave = false;
+  }
+
+  calcAge() {
+    if (this.form.value.age) {
+      const format = "DDMMYYYY";
+      const birthDate = moment(this.form.value.age, format, true);
+  
+      if (birthDate.isValid()) {
+        const currentDate = moment();
+        this.flatAge = currentDate.diff(birthDate, 'years') + " anos";
+        console.log('idade', this.flatAge);
+      } else {
+        console.log("String de data inválida.");
+      }
+    } else {
+      this.flatAge = null;
+    }
   }
 
 }
