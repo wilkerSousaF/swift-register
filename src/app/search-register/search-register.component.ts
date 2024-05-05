@@ -20,6 +20,7 @@ export class SearchRegisterComponent implements OnInit {
   form = new FormGroup({
     name: new FormControl(''),
   });
+  tableRegisters: Register[];
 
 
   constructor(
@@ -36,8 +37,9 @@ export class SearchRegisterComponent implements OnInit {
     this.allRegisters.map(item => (
       item.nameAndAge = `${this.normalizeString(item.name)} - ${this.formatDate(item.age)}`
     ));
-    console.log('registros', this.allRegisters);
     
+    this.tableRegisters = this.allRegisters.slice(0, 4);
+    console.log('registros', this.tableRegisters);
   }
 
   search(){   
@@ -49,6 +51,7 @@ export class SearchRegisterComponent implements OnInit {
   }
 
   selectEvent(event:any){
+    console.log('event', event)
     this.registerService.searchedData(event);
     this.router.navigate(['new-register']);
   }
@@ -76,6 +79,10 @@ export class SearchRegisterComponent implements OnInit {
       .normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '')
       .toLowerCase();
+  }
+
+  selectRow(register: any){
+    console.log('register event', register)
   }
 
 

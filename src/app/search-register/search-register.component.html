@@ -1,30 +1,26 @@
 <form [formGroup]="form" #ngForm="ngForm" (submit)="search()" style="margin-top: 100px;">
   <div>
-    <button type="button" (click)="exportFunction()" class="btn btn-primary export-button"><i class="bi bi-download"></i></button>
+    <button type="button" (click)="exportFunction()" class="btn btn-primary export-button"><i
+        class="bi bi-download"></i></button>
   </div>
-    <div class="d-flex justify-content-center">
-        <div class="col-md-5" style="margin-top: 35px;">
-          <div class="ng-autocomplete">
-            <ng-autocomplete 
-              [data]="allRegisters"
-              [searchKeyword]="keyword"
-              placeholder="Pesquisar nome"
-              (selected)='selectEvent($event)'
-              [notFoundText]="notFound"
-              [itemTemplate]="itemTemplate"
-              [notFoundTemplate]="notFoundTemplate">                                 
-            </ng-autocomplete>
-            
-            <ng-template #itemTemplate let-item>
-              <a [innerHTML]="item.nameAndAge"></a>
-            </ng-template>
-            
-            <ng-template #notFoundTemplate let-notFound>
-            <div [innerHTML]="notFound"></div>
-            </ng-template>
-            </div>
-       
-          <!-- <div class="input-group mb-3">
+  <div class="d-flex justify-content-center">
+    <div class="col-md-5" style="margin-top: 35px;">
+      <div class="ng-autocomplete">
+        <ng-autocomplete [data]="allRegisters" [searchKeyword]="keyword" placeholder="Pesquisar nome"
+          (selected)='selectEvent($event)' [notFoundText]="notFound" [itemTemplate]="itemTemplate"
+          [notFoundTemplate]="notFoundTemplate">
+        </ng-autocomplete>
+
+        <ng-template #itemTemplate let-item>
+          <a [innerHTML]="item.nameAndAge"></a>
+        </ng-template>
+
+        <ng-template #notFoundTemplate let-notFound>
+          <div [innerHTML]="notFound"></div>
+        </ng-template>
+      </div>
+
+      <!-- <div class="input-group mb-3">
             <div class="fix-bord">
             <input type="text" class="form-control fix-bord" formControlName="name" placeholder="Pesquisar nome" aria-label="Recipient's username" aria-describedby="basic-addon2">
             </div>
@@ -32,11 +28,35 @@
               <button class="btn btn-outline-secondary fix-bord-button" type="submit">Pesquisar</button>
             </div>
           </div> -->
-          <div class="d-flex justify-content-end">
-            <button type="button" (click)="addNewRegister()" style="width: 180px; margin-top: 10px;" class="btn btn-success">Adicionar novo</button>
-          </div>
-        </div>
-        
+      <div class="d-flex justify-content-end">
+        <button type="button" (click)="addNewRegister()" style="width: 180px; margin-top: 10px;"
+          class="btn btn-success">Adicionar novo</button>
+      </div>
     </div>
 
+  </div>
+
+  <div style="margin-top: 130px;">
+  <div class="d-flex justify-content-center">
+    <h5>Ultimos cadastros</h5>
+  </div>
+  <div class="d-flex justify-content-center">
+    <table class="table table-sm table-striped table-hover" style="max-width: 600px;">
+      <thead>
+        <tr>
+          <th scope="col" width="70%">Nome e Data de nasc.</th>
+          <th scope="col" width="30%">Cidade</th>
+          <!-- <th scope="col" width="20%" align="center"></th> -->
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let tableRegister of tableRegisters; let idx = index" (click)="selectEvent(tableRegister)" style="cursor: pointer;">
+          <td style="font-size: smaller;" >{{tableRegister.nameAndAge}}</td>
+          <td style="font-size: smaller;" >{{tableRegister.city}}</td>
+          <!-- <td style="font-size: smaller;" align="center">{{tableRegister.age}}</td> -->
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
 </form>

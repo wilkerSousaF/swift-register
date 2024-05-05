@@ -74,7 +74,10 @@ export class RegisterPageComponent implements OnInit {
       description: data.description,
       responsible1: data.responsible1,
       id: data.id,
-    })
+    });
+    if(data.age){
+      this.calcAge();
+    }
   }
 
 
