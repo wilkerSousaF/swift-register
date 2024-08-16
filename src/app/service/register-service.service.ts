@@ -102,4 +102,28 @@ export class RegisterServiceService {
       link.click();
     });
   }
+
+  importDatabase(fileInputEvent: Event) {
+    const file = (fileInputEvent.target as HTMLInputElement).files?.[0];
+    if (!file) {
+      this.toastr.error('Nenhum arquivo selecionado');
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = async (event) => {
+        const json = event.target?.result as string;
+        const data = JSON.parse(json);
+
+        try {
+            await this.table.bulkPut(data);
+            this.toastr.success('Importação completada!');
+        } catch (error) {
+            console.error('Erro na importação:', error);
+            this.toastr.error('Erro na importação')
+        }
+    };
+
+    reader.readAsText(file);
+}
 }

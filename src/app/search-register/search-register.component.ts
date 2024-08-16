@@ -21,6 +21,7 @@ export class SearchRegisterComponent implements OnInit {
     name: new FormControl(''),
   });
   tableRegisters: Register[];
+  showImportInput: boolean = false;
 
 
   constructor(
@@ -60,6 +61,10 @@ export class SearchRegisterComponent implements OnInit {
     this.registerService.exportDatabase();
   }
 
+  importFunction(file: any){
+    this.registerService.importDatabase(file);
+  }
+
   formatDate(inputDate: any) {
     if (inputDate && inputDate.length === 8) {
       const day = inputDate.substring(0, 2);
@@ -83,6 +88,10 @@ export class SearchRegisterComponent implements OnInit {
 
   selectRow(register: any){
     console.log('register event', register)
+  }
+
+  showImport(){
+    this.showImportInput = !this.showImportInput;
   }
 
 
