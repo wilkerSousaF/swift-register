@@ -8,14 +8,14 @@ import { HttpRegisterService } from '../service/http-register.service';
 import { WebsocketService } from '../service/websocket.service';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { ToastrService } from 'ngx-toastr';
-import {  Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'search-register',
   templateUrl: './search-register.component.html',
   styleUrls: ['./search-register.component.css']
 })
-export class SearchRegisterComponent implements OnInit, OnDestroy  {
+export class SearchRegisterComponent implements OnInit, OnDestroy {
 
   @Output() searchedData = new EventEmitter<any>();
 
@@ -31,6 +31,9 @@ export class SearchRegisterComponent implements OnInit, OnDestroy  {
   showImportInput: boolean = false;
   loadingComplete: boolean = false;
   subscribeWebsocket: Subscription;
+  limit = 10;
+  page = 1;
+  searchKeyword: any;
 
 
 
@@ -40,37 +43,39 @@ export class SearchRegisterComponent implements OnInit, OnDestroy  {
     private httpRegisterService: HttpRegisterService,
     private webSocketService: WebsocketService,
     private toastr: ToastrService
-  ){}
+  ) { }
 
   ngOnInit(): void {
     this.loadRegisters();
-    this.subscribeWebsocket = this.webSocketService.messages.subscribe((newRegister:any) => {
+    this.subscribeWebsocket = this.webSocketService.messages.subscribe((newRegister: any) => {
       this.handleNewRegister(newRegister);
     });
 
   }
 
-  onFocused(){
+  onFocused() {
     this.loadingComplete = true;
     console.log('entrou no focus');
     // do something when input is focused
   }
 
-  clearLoading(){
+  clearLoading() {
     console.log('entrou no closed');
     this.loadingComplete = false;
+    this.loadRegisters();
   }
 
   loadRegisters(): void { // A função deve ser do tipo void
-   
-    this.httpRegisterService.getRegisters().subscribe({
+
+    this.httpRegisterService.getAllRegisters().subscribe({
       next: (data) => {
-        this.allRegisters = data;
+        console.log('data', data)
+        this.allRegisters = data.data;
         this.allRegisters.map(item => (
-          item.nameAndAge = `${this.normalizeString(item.person_name)} - ${this.formatDate(item.birthdate)}`
+          item.nameAndAge = `${item.person_name} - ${this.formatDate(item.birthdate)}`
         ));
         this.tableRegisters = this.allRegisters.slice(0, 4);
-       
+
       },
       error: (error) => {
         this.toastr.error('Erro ao carregar registros. Aguarde alguns segundos, então reinicie a aplicação');
@@ -78,6 +83,41 @@ export class SearchRegisterComponent implements OnInit, OnDestroy  {
     });
   }
 
+  onSearchChange(searchValue?: string, page?: number, searchEnded?: boolean): void {
+    this.page = page ? page : 1;
+    this.searchKeyword = searchValue ? searchValue : this.searchKeyword;
+    this.loadingComplete = true;
+  
+    this.httpRegisterService.getRegisters(this.searchKeyword, this.page, this.limit).subscribe({
+      next: (response) => {
+        if (searchEnded) {
+          this.allRegisters = [...this.allRegisters, ...response.data];
+        } else {
+  
+          this.allRegisters = response.data;
+        }
+  
+        this.allRegisters = this.allRegisters.map(item => ({
+          ...item,
+          nameAndAge: `${item.person_name} - ${this.formatDate(item.birthdate)}`
+        }));
+  
+        this.loadingComplete = false;
+        console.log('Data on search:', response, this.allRegisters);
+      },
+      error: (error) => {
+        console.error('Error fetching data:', error);
+        this.toastr.error('Nenhum registro com esse nome encontrado');
+        this.loadRegisters();
+      }
+    });
+  }
+
+  searchEnded() {
+    this.page++;
+    console.log('entrou no search ended', this.page,)
+    this.onSearchChange(this.searchKeyword, this.page, true);
+  }
 
   handleNewRegister(newRegister: any): void {
     console.log('fn na search', newRegister);
@@ -89,7 +129,7 @@ export class SearchRegisterComponent implements OnInit, OnDestroy  {
     this.router.navigate(['new-register']);
   }
 
-  selectEvent(event:any){
+  selectEvent(event: any) {
     console.log('event', event)
     this.registerService.searchedData(event);
     this.router.navigate(['new-register']);
@@ -101,9 +141,9 @@ export class SearchRegisterComponent implements OnInit, OnDestroy  {
       const day = inputDate.substring(0, 2);
       const month = inputDate.substring(2, 4);
       const year = inputDate.substring(4, 8);
-      
+
       const formattedDate = `${day}/${month}/${year}`;
-      
+
       return formattedDate;
     } else {
       return inputDate; // Caso a data não esteja no formato esperado
@@ -117,7 +157,7 @@ export class SearchRegisterComponent implements OnInit, OnDestroy  {
       .toLowerCase();
   }
 
-  selectRow(register: any){
+  selectRow(register: any) {
     console.log('register event', register)
   }
 

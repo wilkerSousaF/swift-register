@@ -5,12 +5,13 @@
       <div class="ng-autocomplete">
         <ng-autocomplete [data]="allRegisters" [searchKeyword]="keyword" placeholder="Pesquisar nome" #autoComplete
           (selected)='selectEvent($event)' [notFoundText]="notFound" [isLoading]="loadingComplete" [itemTemplate]="itemTemplate"
-          (inputFocused)='onFocused()' (closed)="clearLoading()"
-          [notFoundTemplate]="notFoundTemplate">
+          (inputFocused)='onFocused()' (inputCleared)="clearLoading()" [minQueryLength]="4"
+          [notFoundTemplate]="notFoundTemplate" (inputChanged)="onSearchChange($event)" [debounceTime]="500" 
+          (scrolledToEnd)="searchEnded()">
         </ng-autocomplete>
 
         <ng-template #itemTemplate let-item>
-          <a [innerHTML]="item.person_name + ' - ' + formatDate(item.birthdate)"></a>
+          <a [innerHTML]="item?.person_name + ' - ' + formatDate(item?.birthdate)"></a>
         </ng-template>
 
         <ng-template #notFoundTemplate let-notFound>
