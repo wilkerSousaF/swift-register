@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Register } from '../models/register.model';
@@ -8,13 +8,14 @@ import { HttpRegisterService } from '../service/http-register.service';
 import { WebsocketService } from '../service/websocket.service';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { ToastrService } from 'ngx-toastr';
+import {  Subscription } from 'rxjs';
 
 @Component({
   selector: 'search-register',
   templateUrl: './search-register.component.html',
   styleUrls: ['./search-register.component.css']
 })
-export class SearchRegisterComponent implements OnInit {
+export class SearchRegisterComponent implements OnInit, OnDestroy  {
 
   @Output() searchedData = new EventEmitter<any>();
 
@@ -29,6 +30,8 @@ export class SearchRegisterComponent implements OnInit {
   tableRegisters: Register[];
   showImportInput: boolean = false;
   loadingComplete: boolean = false;
+  subscribeWebsocket: Subscription;
+
 
 
   constructor(
@@ -41,9 +44,10 @@ export class SearchRegisterComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadRegisters();
-    this.webSocketService.messages.subscribe((newRegister:any) => {
+    this.subscribeWebsocket = this.webSocketService.messages.subscribe((newRegister:any) => {
       this.handleNewRegister(newRegister);
     });
+
   }
 
   onFocused(){
@@ -73,6 +77,7 @@ export class SearchRegisterComponent implements OnInit {
       }
     });
   }
+
 
   handleNewRegister(newRegister: any): void {
     console.log('fn na search', newRegister);
@@ -114,6 +119,10 @@ export class SearchRegisterComponent implements OnInit {
 
   selectRow(register: any){
     console.log('register event', register)
+  }
+
+  ngOnDestroy() {
+    this.subscribeWebsocket.unsubscribe();
   }
 
 }
