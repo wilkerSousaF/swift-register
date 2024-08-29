@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class HttpRegisterService {
-  private apiUrl = 'http://192.168.3.100:3000/registers'; // URL da API Node.js
+  private apiUrl = 'http://192.168.0.102:3000/registers'; // URL da API Node.js
 
   constructor(private http: HttpClient) { }
 

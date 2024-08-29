@@ -13,7 +13,7 @@ export class WebsocketService implements OnDestroy {
   }
 
   connect(): void {
-    this.socket = new WebSocket('ws://192.168.3.100:3003/'); // Substitua pela URL correta do WebSocket
+    this.socket = new WebSocket('ws://192.168.0.102:3003'); // Substitua pela URL correta do WebSocket
 
     this.socket.onmessage = (event) => {
       console.log('entrou no websocket', event)
@@ -31,6 +31,6 @@ export class WebsocketService implements OnDestroy {
   }
 
   ngOnDestroy() {
-    
+    this.socket.close();
   }
 }
