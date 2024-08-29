@@ -1,9 +1,13 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Register } from '../models/register.model';
 import { RegisterServiceService } from '../service/register-service.service';
 import * as moment from 'moment';
+import { HttpRegisterService } from '../service/http-register.service';
+import { WebsocketService } from '../service/websocket.service';
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'search-register',
@@ -14,38 +18,67 @@ export class SearchRegisterComponent implements OnInit {
 
   @Output() searchedData = new EventEmitter<any>();
 
+  @ViewChild('autoComplete') autoComplete: any;
+
   keyword = 'nameAndAge';
   notFound = 'Nenhum nome encontrado';
   allRegisters: Register[];
   form = new FormGroup({
-    name: new FormControl(''),
+    person_name: new FormControl(''),
   });
   tableRegisters: Register[];
   showImportInput: boolean = false;
+  loadingComplete: boolean = false;
 
 
   constructor(
     private registerService: RegisterServiceService,
     public router: Router,
+    private httpRegisterService: HttpRegisterService,
+    private webSocketService: WebsocketService,
+    private toastr: ToastrService
   ){}
 
-  ngOnInit(){
-    this.getRegisters();
+  ngOnInit(): void {
+    this.loadRegisters();
+    this.webSocketService.messages.subscribe((newRegister:any) => {
+      this.handleNewRegister(newRegister);
+    });
   }
 
-  async getRegisters(){
-    this.allRegisters = await this.registerService.getAllRegister();
-    this.allRegisters.map(item => (
-      item.nameAndAge = `${this.normalizeString(item.name)} - ${this.formatDate(item.age)}`
-    ));
-    
-    this.tableRegisters = this.allRegisters.slice(0, 4);
-    console.log('registros', this.tableRegisters);
+  onFocused(){
+    this.loadingComplete = true;
+    console.log('entrou no focus');
+    // do something when input is focused
   }
 
-  search(){   
-    this.registerService.getRegister();
-  } 
+  clearLoading(){
+    console.log('entrou no closed');
+    this.loadingComplete = false;
+  }
+
+  loadRegisters(): void { // A função deve ser do tipo void
+   
+    this.httpRegisterService.getRegisters().subscribe({
+      next: (data) => {
+        this.allRegisters = data;
+        this.allRegisters.map(item => (
+          item.nameAndAge = `${this.normalizeString(item.person_name)} - ${this.formatDate(item.birthdate)}`
+        ));
+        this.tableRegisters = this.allRegisters.slice(0, 4);
+       
+      },
+      error: (error) => {
+        this.toastr.error('Erro ao carregar registros. Aguarde alguns segundos, então reinicie a aplicação');
+      }
+    });
+  }
+
+  handleNewRegister(newRegister: any): void {
+    console.log('fn na search', newRegister);
+    this.loadRegisters();
+  }
+
 
   addNewRegister() {
     this.router.navigate(['new-register']);
@@ -57,13 +90,6 @@ export class SearchRegisterComponent implements OnInit {
     this.router.navigate(['new-register']);
   }
 
-  exportFunction() {
-    this.registerService.exportDatabase();
-  }
-
-  importFunction(file: any){
-    this.registerService.importDatabase(file);
-  }
 
   formatDate(inputDate: any) {
     if (inputDate && inputDate.length === 8) {
@@ -89,10 +115,5 @@ export class SearchRegisterComponent implements OnInit {
   selectRow(register: any){
     console.log('register event', register)
   }
-
-  showImport(){
-    this.showImportInput = !this.showImportInput;
-  }
-
 
 }

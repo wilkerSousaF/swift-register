@@ -4,6 +4,8 @@ import { RegisterServiceService } from '../service/register-service.service';
 import * as moment from 'moment';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { Router } from '@angular/router';
+import { HttpRegisterService } from '../service/http-register.service';
+import { ToastrService } from 'ngx-toastr';
 
 
 
@@ -23,28 +25,31 @@ export class RegisterPageComponent implements OnInit {
   showPrintError: boolean = false;
 
   form = new FormGroup({
-    name: new FormControl('', [Validators.required]),
+    person_name: new FormControl('', [Validators.required]),
     city: new FormControl(''),
-    age: new FormControl(''),
-    type: new FormControl('MASC'),
-    date: new FormControl(''),
+    birthdate: new FormControl(''),
+    person_type: new FormControl('MASC'),
+    register_date: new FormControl(''),
     zip: new FormControl(''),
     id: new FormControl(''),
     responsible1: new FormControl(''),
     responsible2: new FormControl(''),
     description: new FormControl(''),
+    serial_id: new FormControl(''),
   });
 
 
   constructor(
     private registerService: RegisterServiceService,
+    private httpRegisterService: HttpRegisterService,
     public router: Router,
+    private toastr: ToastrService
   ){
   }
 
   ngOnInit(){
    this.receivedData = this.registerService.dataReceived;
-    this.form.get('date')?.setValue(moment().format('DD/MM/YYYY'));
+    this.form.get('register_date')?.setValue(moment().format('DD/MM/YYYY'));
     
     if(this.receivedData){
       this.loadRegister(this.receivedData);
@@ -67,36 +72,30 @@ export class RegisterPageComponent implements OnInit {
 
   loadRegister(data: any){
     this.form.patchValue({
-      name: data.name,
+      person_name: data.person_name,
       city: data.city,
-      age: data.age,
-      type: data.type,
+      birthdate: data.birthdate,
+      person_type: data.person_type,
       description: data.description,
       responsible1: data.responsible1,
-      id: data.id,
+      serial_id: data.serial_id,
     });
-    if(data.age){
+    if(data.birthdate){
       this.calcAge();
     }
   }
 
 
   save(){
-    this.blockUI.start();
+    
     this.showPrintError = false;
     if(this.form.valid){
-      if(!this.form.value.id){
-        this.form.get('id')?.setValue(moment().format());
-        this.registerService.saveRegister(this.form.value);
+      if(!this.form.value.serial_id){
+        this.addRegister(this.form.value);
       } else {
         console.log('entrou');
-        this.registerService.updateRegister(this.form.value);
+        this.updateRegister(this.form.value.serial_id, this.form.value);
       }
-
-      setTimeout(() => {
-        this.blockSave = this.registerService.saved;
-        this.blockUI.stop(); 
-      }, 1000);
   } else {
     this.form.markAllAsTouched();
     this.blockUI.stop(); 
@@ -130,9 +129,9 @@ export class RegisterPageComponent implements OnInit {
   }
 
   calcAge() {
-    if (this.form.value.age) {
+    if (this.form.value.birthdate) {
       const format = "DDMMYYYY";
-      const birthDate = moment(this.form.value.age, format, true);
+      const birthDate = moment(this.form.value.birthdate, format, true);
   
       if (birthDate.isValid()) {
         const currentDate = moment();
@@ -144,6 +143,40 @@ export class RegisterPageComponent implements OnInit {
     } else {
       this.flatAge = null;
     }
+  }
+
+  addRegister(newRegister: any) {
+    this.blockUI.start();
+    this.httpRegisterService.addRegister(newRegister).subscribe(
+      response => {
+        this.blockSave = true;
+        this.toastr.success('Registro salvo com sucesso!');
+        console.log('Registro adicionado com sucesso:', response);
+        this.blockUI.stop();
+      },
+      error => {
+        console.error('Erro ao adicionar registro:', error);
+        this.toastr.error('Falha ao salvar registro!');
+        this.blockUI.stop();
+      }
+    );
+  }
+
+  updateRegister(id: string, updatedRegister: any) {
+    this.blockUI.start();
+    this.httpRegisterService.updateRegister(id, updatedRegister).subscribe({
+      next: (response) => {
+        this.blockSave = true;
+        console.log('Registro atualizado com sucesso:', response);
+        this.toastr.success('Registro salvo com sucesso!');
+        this.blockUI.stop();
+      },
+      error: (error) => {
+        console.error('Erro ao atualizar registro:', error);
+        this.toastr.error('Falha ao salvar registro!');
+        this.blockUI.stop();
+      }
+    });
   }
 
 }

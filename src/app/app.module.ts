@@ -14,6 +14,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
+import { HttpClientModule } from '@angular/common/http';
 
 
 
@@ -38,7 +39,8 @@ import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
     ReactiveFormsModule,
     CommonModule,
     NgxMaskDirective,
-    NgxMaskPipe
+    NgxMaskPipe,
+    HttpClientModule
    
   ],
   exports:[ RegisterPageComponent, SearchRegisterComponent],
