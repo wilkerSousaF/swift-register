@@ -20,14 +20,16 @@
 
         <div class="input-group" style="margin-top: 35px; width: 300px;">
           <select class="form-select fix-type-bord" style="margin-left: 5px;" formControlName="person_type"
-          aria-label="Sexo/Tipo">
+          aria-label="Sexo/Tipo" (change)="checkCounter()" ng-disabled="savedRegister">
           <option value="MASC" selected>Masculino</option>
           <option value="FEM">Feminino</option>
           <option value="PREF">Preferencial</option>
           <option value="CRIA">Criança</option>
         </select>
-          <input type="number" style="text-align: center;" [value]="counter" min="0" class="form-control" aria-label="id" 
-            aria-describedby="basic-addon1">
+          <input *ngIf="savedRegister" type="number" style="text-align: center;" [value]="fixedCounter" min="0" class="form-control" aria-label="id" 
+            aria-describedby="basic-addon1" readonly>
+          <input *ngIf="!savedRegister" type="number" style="text-align: center;" [value]="counter" min="0" class="form-control" aria-label="id" 
+            aria-describedby="basic-addon1" readonly>
         </div>
       </div>
 

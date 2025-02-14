@@ -32,7 +32,7 @@
     "localbase": "^0.7.5",
     "moment": "^2.29.4",
     "ng-block-ui": "^3.0.2",
-    "ngx-mask": "^15.1.4",
+    "ngx-mask": "^15.2.3",
     "ngx-toastr": "^16.0.2",
     "rxjs": "~7.5.0",
     "sails": "^1.5.3",

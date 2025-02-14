@@ -34,6 +34,8 @@ export class SearchRegisterComponent implements OnInit, OnDestroy {
   limit = 10;
   page = 1;
   searchKeyword: any;
+  birthdateKeyword: string = '';
+  birthdateInput: any;
 
 
 
@@ -54,6 +56,7 @@ export class SearchRegisterComponent implements OnInit, OnDestroy {
   }
 
   onFocused() {
+    this.birthdateInput = '';
     this.loadingComplete = true;
     console.log('entrou no focus');
     // do something when input is focused
@@ -112,6 +115,38 @@ export class SearchRegisterComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+  onBirthdateSearchChange(event: any): void {
+  
+    const birthdate = event.replace(/\//g, '');
+  
+    if (birthdate) {
+      this.loadingComplete = true;
+  
+      this.httpRegisterService.getRegistersByBirthdate(birthdate).subscribe({
+        next: (response) => {
+          // Atualiza os registros e força a exibição no ng-autocomplete
+          this.allRegisters = response.data.map(item => ({
+            ...item,
+            nameAndAge: `${item.person_name} - ${this.formatDate(item.birthdate)}`
+          }));
+          this.loadingComplete = false;
+  
+          this.autoComplete.open();
+          // const autoCompleteInput = document.querySelector('#autoComplete input') as HTMLInputElement;
+          // if (autoCompleteInput) {
+          //   autoCompleteInput.dispatchEvent(new Event('input')); // Dispara o evento de input
+          // }
+        },
+        error: (error) => {
+          console.error('Erro ao buscar por data de aniversário:', error);
+          this.toastr.error('Nenhum registro encontrado para essa data.');
+          this.loadingComplete = false;
+        },
+      });
+    }
+  }
+
 
   searchEnded() {
     this.page++;

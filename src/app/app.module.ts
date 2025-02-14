@@ -13,10 +13,8 @@ import {AutocompleteLibModule} from 'angular-ng-autocomplete';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
-import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
+import { NgxMaskDirective, NgxMaskPipe, provideEnvironmentNgxMask, provideNgxMask } from 'ngx-mask';
 import { HttpClientModule } from '@angular/common/http';
-
-
 
 @NgModule({
   declarations: [
@@ -40,7 +38,8 @@ import { HttpClientModule } from '@angular/common/http';
     CommonModule,
     NgxMaskDirective,
     NgxMaskPipe,
-    HttpClientModule
+    HttpClientModule,
+    NgxMaskDirective, NgxMaskPipe
    
   ],
   exports:[ RegisterPageComponent, SearchRegisterComponent],

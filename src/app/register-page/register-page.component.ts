@@ -6,6 +6,8 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { Router } from '@angular/router';
 import { HttpRegisterService } from '../service/http-register.service';
 import { ToastrService } from 'ngx-toastr';
+import { WebsocketService } from '../service/websocket.service';
+import { Subscription } from 'rxjs';
 
 
 
@@ -23,6 +25,7 @@ export class RegisterPageComponent implements OnInit {
   receivedData: any;
   blockSave: boolean = false;
   showPrintError: boolean = false;
+  savedRegister: boolean = false;
 
   form = new FormGroup({
     person_name: new FormControl('', [Validators.required]),
@@ -37,24 +40,46 @@ export class RegisterPageComponent implements OnInit {
     description: new FormControl(''),
     serial_id: new FormControl(''),
   });
+  counters: any;
+  subscribeWebsocket: Subscription;
+  fixedCounter: number;
 
 
   constructor(
     private registerService: RegisterServiceService,
     private httpRegisterService: HttpRegisterService,
     public router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private webSocketService: WebsocketService,
   ){
   }
 
   ngOnInit(){
    this.receivedData = this.registerService.dataReceived;
     this.form.get('register_date')?.setValue(moment().format('DD/MM/YYYY'));
+    this.subscribeWebsocket = this.webSocketService.messages.subscribe((newRegister: any) => {
+      this.loadCounters();
+    });
     
     if(this.receivedData){
       this.loadRegister(this.receivedData);
     }
 
+    this.loadCounters();    
+
+  }
+
+  loadCounters() {
+    this.httpRegisterService.getCounters().subscribe({
+      next: (data) => {
+        this.counters = data;
+        this.checkCounter();
+        console.log('counters', this.counters)
+      },
+      error: (error) => {
+        console.error('Erro ao carregar contadores:', error);
+      }
+    });
   }
 
   noWhitespaceValidator(control: FormControl) {
@@ -92,15 +117,22 @@ export class RegisterPageComponent implements OnInit {
     if(this.form.valid){
       if(!this.form.value.serial_id){
         this.addRegister(this.form.value);
+        this.fixedCounterNum();
       } else {
         console.log('entrou');
         this.updateRegister(this.form.value.serial_id, this.form.value);
+        this.fixedCounterNum();
       }
   } else {
     this.form.markAllAsTouched();
     this.blockUI.stop(); 
   }
   } 
+
+  fixedCounterNum(){
+    this.savedRegister = true;
+    this.fixedCounter = this.counter;
+  }
 
 
   printScreen() {
@@ -177,6 +209,15 @@ export class RegisterPageComponent implements OnInit {
         this.blockUI.stop();
       }
     });
+  }
+
+  checkCounter(){
+    console.log('event change', this.form.get('person_type')?.value)
+    const selectedType = this.form.get('person_type')?.value ?? 'MASC'; 
+
+    if (this.counters[selectedType] !== undefined) {
+      this.counter = this.counters[selectedType]+1;
+    } 
   }
 
 }
