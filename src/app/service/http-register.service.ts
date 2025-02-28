@@ -7,8 +7,8 @@ import { Register } from '../models/register.model';
   providedIn: 'root'
 })
 export class HttpRegisterService {
-  private apiUrl = 'http://192.168.0.102:3000/registers'
-  // private apiUrl = 'http://localhost:3000/registers'; 
+  // private apiUrl = 'http://192.168.0.102:3000/registers'
+  private apiUrl = 'http://localhost:3000/registers'; 
 
   constructor(private http: HttpClient) { }
 
@@ -45,7 +45,6 @@ export class HttpRegisterService {
 
   addRegister(register: any): Observable<any> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-
     return this.http.post<any>(this.apiUrl, register, { headers });
   }
 

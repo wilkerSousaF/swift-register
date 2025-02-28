@@ -20,16 +20,16 @@
 
         <div class="input-group" style="margin-top: 35px; width: 300px;">
           <select class="form-select fix-type-bord" style="margin-left: 5px;" formControlName="person_type"
-          aria-label="Sexo/Tipo" (change)="checkCounter()" ng-disabled="savedRegister">
-          <option value="MASC" selected>Masculino</option>
-          <option value="FEM">Feminino</option>
-          <option value="PREF">Preferencial</option>
-          <option value="CRIA">Criança</option>
-        </select>
-          <input *ngIf="savedRegister" type="number" style="text-align: center;" [value]="fixedCounter" min="0" class="form-control" aria-label="id" 
-            aria-describedby="basic-addon1" readonly>
-          <input *ngIf="!savedRegister" type="number" style="text-align: center;" [value]="counter" min="0" class="form-control" aria-label="id" 
-            aria-describedby="basic-addon1" readonly>
+            aria-label="Sexo/Tipo" (change)="checkCounter()" ng-disabled="savedRegister">
+            <option value="MASC" selected>Masculino</option>
+            <option value="FEM">Feminino</option>
+            <option value="PREF">Preferencial</option>
+            <option value="CRIA">Criança</option>
+          </select>
+          <input *ngIf="savedRegister" type="number" style="text-align: center;" [value]="fixedCounter" min="0"
+            class="form-control" aria-label="id" aria-describedby="basic-addon1" readonly>
+          <input *ngIf="!savedRegister" type="number" style="text-align: center;" [value]="counter" min="0"
+            class="form-control" aria-label="id" aria-describedby="basic-addon1" readonly>
         </div>
       </div>
 
@@ -43,7 +43,8 @@
       </div>
       <div class="error-message-container" *ngIf="form.get('name')?.invalid && form.get('name')?.touched">
         <div *ngIf="form.get('name')?.errors?.['required']" class="error-message">É necessário adicionar um Nome!</div>
-        <div *ngIf="form.get('name')?.errors?.['whitespace'] && !form.get('name')?.errors?.['required']" class="error-message">Não é permitido espaços em branco</div>
+        <div *ngIf="form.get('name')?.errors?.['whitespace'] && !form.get('name')?.errors?.['required']"
+          class="error-message">Não é permitido espaços em branco</div>
       </div>
 
 
@@ -51,22 +52,22 @@
         <div class="input-group-prepend">
           <span class="input-group-text fix-bord" id="basic-addon1" style="min-width: 75px;">Cidade</span>
         </div>
-        <input type="text" style="min-width: 230px !important;" class="form-control fix-age-bord" formControlName="city" placeholder="Cidade/Estado" aria-label="nome"
-          aria-describedby="basic-addon1" maxlength="67">
+        <input type="text" style="min-width: 230px !important;" class="form-control fix-age-bord" formControlName="city"
+          placeholder="Cidade/Estado" aria-label="nome" aria-describedby="basic-addon1" maxlength="67">
 
-          <div class="input-group-prepend">
-            <span class="input-group-text fix-bord" id="basic-addon1" style="min-width: 75px; margin-left: 5px;">Data Nasc.:</span>
-          </div>
-          <input type="text" class="form-control" 
-          [ngClass]="!flatAge ? 'fix-age-bord':'fix-bord'"
+        <div class="input-group-prepend">
+          <span class="input-group-text fix-bord" id="basic-addon1" style="min-width: 75px; margin-left: 5px;">Data
+            Nasc.:</span>
+        </div>
+        <input type="text" class="form-control" [ngClass]="!flatAge ? 'fix-age-bord':'fix-bord'"
           placeholder="DD/MM/AAAA" formControlName="birthdate" aria-label="idade" style="max-width: 135px !important;"
-            aria-describedby="basic-addon1" maxlength="10" (keypress)="onlyNumber($event)" mask="00/00/0000" (blur)="calcAge()">
-            <!-- <input type="text" style="text-align: center; width: 10px !important;" [value]="flatAge" class="form-control" aria-label="idade" 
-            aria-describedby="basic-addon1"> -->
-            <div class="input-group-prepend " *ngIf="flatAge && form.value.birthdate">
-              <span class="input-group-text fix-age-bord" id="basic-addon1" style="min-width: 75px; border-radius: 0;">{{flatAge}}</span>
-            </div>
-            
+          aria-describedby="basic-addon1" maxlength="10" (keypress)="onlyNumber($event)" mask="00/00/0000"
+          (blur)="calcAge()">
+        <div class="input-group-prepend " *ngIf="flatAge && form.value.birthdate">
+          <span class="input-group-text fix-age-bord" id="basic-addon1"
+            style="min-width: 75px; border-radius: 0;">{{flatAge}}</span>
+        </div>
+
       </div>
 
       <div class="input-group mb-3" *ngIf="form.value.person_type === 'CRIA'">
@@ -81,18 +82,20 @@
         <div class="input-group-prepend">
           <span class="input-group-text fix-bord" style="min-height: 254px; align-items: baseline;">Descrição:</span>
         </div>
-        <textarea class="form-control" rows="10" formControlName="description" aria-label="With textarea" maxlength="889" spellcheck="false"></textarea>
+        <textarea class="form-control" rows="10" formControlName="description" aria-label="With textarea"
+          maxlength="889" spellcheck="false"></textarea>
       </div>
 
       <div class="d-flex justify-content-between">
         <div>
-          <button *ngIf="!blockSave" type="submit" style="width: 180px;" class="btn btn-success printPageButton">Salvar</button>
+          <button *ngIf="!blockSave" type="submit" style="width: 180px;"
+            class="btn btn-success printPageButton">Salvar</button>
         </div>
 
         <div>
           <button type="button" (click)="printScreen()" style="width: 180px;" id="printPageButton"
             class="btn btn-primary printPageButton">Imprimir e voltar</button>
-            <div *ngIf="showPrintError" class="error-message printPageButton">Salve antes de imprimir</div>
+          <div *ngIf="showPrintError" class="error-message printPageButton">Salve antes de imprimir</div>
         </div>
       </div>
 

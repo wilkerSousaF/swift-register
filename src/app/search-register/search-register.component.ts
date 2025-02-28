@@ -3,10 +3,8 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Register } from '../models/register.model';
 import { RegisterServiceService } from '../service/register-service.service';
-import * as moment from 'moment';
 import { HttpRegisterService } from '../service/http-register.service';
 import { WebsocketService } from '../service/websocket.service';
-import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 
@@ -58,18 +56,14 @@ export class SearchRegisterComponent implements OnInit, OnDestroy {
   onFocused() {
     this.birthdateInput = '';
     this.loadingComplete = true;
-    console.log('entrou no focus');
-    // do something when input is focused
   }
 
   clearLoading() {
-    console.log('entrou no closed');
     this.loadingComplete = false;
     this.loadRegisters();
   }
 
-  loadRegisters(): void { // A função deve ser do tipo void
-
+  loadRegisters(): void { 
     this.httpRegisterService.getAllRegisters().subscribe({
       next: (data) => {
         console.log('data', data)
@@ -90,21 +84,21 @@ export class SearchRegisterComponent implements OnInit, OnDestroy {
     this.page = page ? page : 1;
     this.searchKeyword = searchValue ? searchValue : this.searchKeyword;
     this.loadingComplete = true;
-  
+
     this.httpRegisterService.getRegisters(this.searchKeyword, this.page, this.limit).subscribe({
       next: (response) => {
         if (searchEnded) {
           this.allRegisters = [...this.allRegisters, ...response.data];
         } else {
-  
+
           this.allRegisters = response.data;
         }
-  
+
         this.allRegisters = this.allRegisters.map(item => ({
           ...item,
           nameAndAge: `${item.person_name} - ${this.formatDate(item.birthdate)}`
         }));
-  
+
         this.loadingComplete = false;
         console.log('Data on search:', response, this.allRegisters);
       },
@@ -117,26 +111,20 @@ export class SearchRegisterComponent implements OnInit, OnDestroy {
   }
 
   onBirthdateSearchChange(event: any): void {
-  
     const birthdate = event.replace(/\//g, '');
-  
+
     if (birthdate) {
       this.loadingComplete = true;
-  
+
       this.httpRegisterService.getRegistersByBirthdate(birthdate).subscribe({
         next: (response) => {
-          // Atualiza os registros e força a exibição no ng-autocomplete
           this.allRegisters = response.data.map(item => ({
             ...item,
             nameAndAge: `${item.person_name} - ${this.formatDate(item.birthdate)}`
           }));
           this.loadingComplete = false;
-  
+
           this.autoComplete.open();
-          // const autoCompleteInput = document.querySelector('#autoComplete input') as HTMLInputElement;
-          // if (autoCompleteInput) {
-          //   autoCompleteInput.dispatchEvent(new Event('input')); // Dispara o evento de input
-          // }
         },
         error: (error) => {
           console.error('Erro ao buscar por data de aniversário:', error);
@@ -150,12 +138,10 @@ export class SearchRegisterComponent implements OnInit, OnDestroy {
 
   searchEnded() {
     this.page++;
-    console.log('entrou no search ended', this.page,)
     this.onSearchChange(this.searchKeyword, this.page, true);
   }
 
   handleNewRegister(newRegister: any): void {
-    console.log('fn na search', newRegister);
     this.loadRegisters();
   }
 
@@ -165,7 +151,6 @@ export class SearchRegisterComponent implements OnInit, OnDestroy {
   }
 
   selectEvent(event: any) {
-    console.log('event', event)
     this.registerService.searchedData(event);
     this.router.navigate(['new-register']);
   }
@@ -180,9 +165,8 @@ export class SearchRegisterComponent implements OnInit, OnDestroy {
       const formattedDate = `${day}/${month}/${year}`;
 
       return formattedDate;
-    } else {
-      return inputDate; // Caso a data não esteja no formato esperado
-    }
+    }  
+    return inputDate;  
   }
 
   normalizeString(input: any): string {

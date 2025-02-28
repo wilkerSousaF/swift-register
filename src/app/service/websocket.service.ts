@@ -6,19 +6,19 @@ import { Observable, Subject } from 'rxjs';
 })
 export class WebsocketService implements OnDestroy {
   private socket: WebSocket;
-  private messagesSubject = new Subject<any>(); // Cria um Subject para as mensagens
+  private messagesSubject = new Subject<any>(); 
 
   constructor() {
     this.connect();
   }
 
   connect(): void {
-    this.socket = new WebSocket('ws://192.168.0.102:3003'); // Substitua pela URL correta do WebSocket
+    this.socket = new WebSocket('ws://192.168.0.102:3003'); 
 
     this.socket.onmessage = (event) => {
       console.log('entrou no websocket', event)
       const data = JSON.parse(event.data);
-      this.messagesSubject.next(data); // Emite os dados recebidos para todos os observadores
+      this.messagesSubject.next(data); 
     };
 
     this.socket.onerror = (error) => {
@@ -27,11 +27,10 @@ export class WebsocketService implements OnDestroy {
   }
 
   get messages(): Observable<any> {
-    return this.messagesSubject.asObservable(); // Retorna o Subject como um Observable
+    return this.messagesSubject.asObservable();
   }
 
   ngOnDestroy() {
-    
     this.socket.close();
   }
 }

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup,NgForm, FormControl, Validators} from '@angular/forms';
+import { FormBuilder, FormGroup, NgForm, FormControl, Validators } from '@angular/forms';
 import { RegisterServiceService } from '../service/register-service.service';
 import * as moment from 'moment';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
@@ -51,22 +51,20 @@ export class RegisterPageComponent implements OnInit {
     public router: Router,
     private toastr: ToastrService,
     private webSocketService: WebsocketService,
-  ){
+  ) {
   }
 
-  ngOnInit(){
-   this.receivedData = this.registerService.dataReceived;
+  ngOnInit() {
+    this.receivedData = this.registerService.dataReceived;
     this.form.get('register_date')?.setValue(moment().format('DD/MM/YYYY'));
     this.subscribeWebsocket = this.webSocketService.messages.subscribe((newRegister: any) => {
       this.loadCounters();
     });
-    
-    if(this.receivedData){
+
+    if (this.receivedData) {
       this.loadRegister(this.receivedData);
     }
-
-    this.loadCounters();    
-
+    this.loadCounters();
   }
 
   loadCounters() {
@@ -95,7 +93,7 @@ export class RegisterPageComponent implements OnInit {
     }
   }
 
-  loadRegister(data: any){
+  loadRegister(data: any) {
     this.form.patchValue({
       person_name: data.person_name,
       city: data.city,
@@ -105,47 +103,45 @@ export class RegisterPageComponent implements OnInit {
       responsible1: data.responsible1,
       serial_id: data.serial_id,
     });
-    if(data.birthdate){
+    if (data.birthdate) {
       this.calcAge();
     }
   }
 
 
-  save(){
-    
+  save() {
     this.showPrintError = false;
-    if(this.form.valid){
-      if(!this.form.value.serial_id){
+    if (this.form.valid) {
+      if (!this.form.value.serial_id) {
         this.addRegister(this.form.value);
         this.fixedCounterNum();
       } else {
-        console.log('entrou');
         this.updateRegister(this.form.value.serial_id, this.form.value);
         this.fixedCounterNum();
       }
-  } else {
-    this.form.markAllAsTouched();
-    this.blockUI.stop(); 
+    } else {
+      this.form.markAllAsTouched();
+      this.blockUI.stop();
+    }
   }
-  } 
 
-  fixedCounterNum(){
+  fixedCounterNum() {
     this.savedRegister = true;
     this.fixedCounter = this.counter;
   }
 
 
   printScreen() {
-    if(this.blockSave){
-    window.print();
-    this.router.navigate(['']);
-    this.clear();
-  } else {
-    this.showPrintError = true;
-    setTimeout(() => {
-      this.showPrintError = false;
-    }, 2000);
-  }
+    if (this.blockSave) {
+      window.print();
+      this.router.navigate(['']);
+      this.clear();
+    } else {
+      this.showPrintError = true;
+      setTimeout(() => {
+        this.showPrintError = false;
+      }, 2000);
+    }
   }
 
   back() {
@@ -164,7 +160,7 @@ export class RegisterPageComponent implements OnInit {
     if (this.form.value.birthdate) {
       const format = "DDMMYYYY";
       const birthDate = moment(this.form.value.birthdate, format, true);
-  
+
       if (birthDate.isValid()) {
         const currentDate = moment();
         this.flatAge = currentDate.diff(birthDate, 'years') + " anos";
@@ -180,13 +176,13 @@ export class RegisterPageComponent implements OnInit {
   addRegister(newRegister: any) {
     this.blockUI.start();
     this.httpRegisterService.addRegister(newRegister).subscribe(
-      response => {
+      (response) => {
         this.blockSave = true;
         this.toastr.success('Registro salvo com sucesso!');
         console.log('Registro adicionado com sucesso:', response);
         this.blockUI.stop();
       },
-      error => {
+      (error) => {
         console.error('Erro ao adicionar registro:', error);
         this.toastr.error('Falha ao salvar registro!');
         this.blockUI.stop();
@@ -211,13 +207,13 @@ export class RegisterPageComponent implements OnInit {
     });
   }
 
-  checkCounter(){
+  checkCounter() {
     console.log('event change', this.form.get('person_type')?.value)
-    const selectedType = this.form.get('person_type')?.value ?? 'MASC'; 
+    const selectedType = this.form.get('person_type')?.value ?? 'MASC';
 
     if (this.counters[selectedType] !== undefined) {
-      this.counter = this.counters[selectedType]+1;
-    } 
+      this.counter = this.counters[selectedType] + 1;
+    }
   }
 
 }

@@ -19,6 +19,16 @@
   padding: 0 15px;
 }
 
+.btn-search-custom{
+  position: absolute;
+  right: 77px;
+  top: 19%;
+  transform: translateY(-58%);
+  cursor: pointer;
+  border-radius: 2px;
+  opacity: 0.8;
+}
+
 .ng-autocomplete {
     width: 600px;
     }
@@ -52,12 +62,12 @@
         width: 40px;
         height: 40px;
         border-radius: 50%;
-        background-color: #D3D3D3; /* cor de fundo do botão */
-        color: #fff; /* cor do ícone */
+        background-color: #D3D3D3; 
+        color: #fff; 
         border: none;
         outline: none;
         cursor: pointer;
-        box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2); /* sombra do botão */;
+        box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2); 
       }
   
       .export-button:hover {
@@ -66,8 +76,8 @@
       }
 
       .table-hover tr:hover {
-        background-color: #D3D3D3; /* Cor de fundo quando o mouse passa sobre a linha */
-        cursor: pointer; /* Altera o cursor para indicar que a linha é clicável */
+        background-color: #D3D3D3;
+        cursor: pointer; 
       }
 
       .import-button{
@@ -79,12 +89,12 @@
         width: 40px;
         height: 40px;
         border-radius: 50%;
-        background-color: #D3D3D3; /* cor de fundo do botão */
-        color: #fff; /* cor do ícone */
+        background-color: #D3D3D3; 
+        color: #fff; 
         border: none;
         outline: none;
         cursor: pointer;
-        box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2); /* sombra do botão */;
+        box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2); 
       }
   
       .import-button:hover {
